@@ -1,0 +1,25 @@
+1) docker run: Run a container(a running copy of it) from an image(Ready made package with app and it's environment). E.g.: Image - Class, Container -      Object. It will check in the host(your computer) first, if it's not present there it will pull down the image from docker host.
+This command runs in a foreground/ attached mode. Output can only be viewed on the screen.
+
+2) docker ps: Lists all running containers and some basic info about them
+
+3) docker ps -a: Lists all current or previous exited containers
+
+4) docker stop [container name/ container id]: Stop the container running. docker ps helps to get id / name.
+
+5) docker rm [name/id of container]: To remove a exited container permanently.
+
+6) docker images: see list of images and their sizes
+
+7) docker rmi [repo name]: delete the images. To do this, their all dependent containers should be removed earlier
+
+8) docker pull [repo]: just pull the image without running it
+
+Container only exists till the task is finished.
+
+9) docker exec: To execute a command on the docker container
+
+10) docker run -d [repo]: Runs the docker container in detached mode / background mode and you will be back to prompt immediately after this command.
+Container continues to run in backend.
+
+11) docker attach [few starting characters of id]: To attach back to the running container
