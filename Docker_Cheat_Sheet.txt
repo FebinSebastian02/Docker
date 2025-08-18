@@ -1,5 +1,6 @@
 1) docker run: Run a container(a running copy of it) from an image(Ready made package with app and it's environment). E.g.: Image - Class, Container -      Object. It will check in the host(your computer) first, if it's not present there it will pull down the image from docker host.
 This command runs in a foreground/ attached mode. Output can only be viewed on the screen.
+If the image is not official, we should type docker run [user id/repo name]
 
 2) docker ps: Lists all running containers and some basic info about them
 
@@ -17,9 +18,37 @@ This command runs in a foreground/ attached mode. Output can only be viewed on t
 
 Container only exists till the task is finished.
 
-9) docker exec: To execute a command on the docker container
+9) docker exec [container id] [command]: To execute a command on the docker container
 
 10) docker run -d [repo]: Runs the docker container in detached mode / background mode and you will be back to prompt immediately after this command.
 Container continues to run in backend.
 
 11) docker attach [few starting characters of id]: To attach back to the running container
+
+12) docker run ubuntu sleep 20: This command lives for 20 sec and it's exited. Therefore, container also exits.
+
+13) docker stop [container id/ container name]: To force kill a container.
+
+14) docker run -d --name [preferred container name] image: To change container name to a desired one.
+
+15) docker run [image]:4.0 - 4.0 is the tag which refers the version that should be ran. If tag is not explicitly given, default version is ran.
+
+16) docker run -i [image]: To run in interactive mode
+
+17) docker run -it [image]: The interactive mode along with prompt is ran
+
+18) docker run -p 80:5000 [image]:To port map 80 of local host to 5000 on docker container. Website can be accessed using https://[internal ip]:[port]. Multiple instances of container can be run in multiple hosts
+
+19) docker run -v [external directory]: [directory inside a container]: To port volume to a external directory, so that data is stored even after the removal of container.
+
+20) docker inspect [container name/ id]: To get all details of container in json format
+
+21) docker logs [container id/ name]: To see logs of container that we ran on background/detached mode.
+
+22) docker run [image] sh -c "cat /etc/*release*": Gives the details on the version of container.
+
+23) 
+
+
+
+
