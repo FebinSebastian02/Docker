@@ -47,8 +47,43 @@ Container continues to run in backend.
 
 22) docker run [image] sh -c "cat /etc/*release*": Gives the details on the version of container.
 
-23) 
+23) cat [command]: Print contents of file to the terminal.
 
+24) pwd: Print current working directory
 
+25) vim [file name]: To open in editor
 
+26) i: For insert mode in editor
+
+27) ESC + :wq!: For saving and closing editor 
+
+28) ESC + :q!: For closing editor without saving
+
+29) docker run -e APP_COLOR=blue [image]: To run container with an environment variable set
+
+CREATING DOCKER IMAGE
+Docker file: A text file written in specific format that the Docker can understand. It's in Instruction and Argument format.
+Everything on the left in CAPS is an instruction. Everything on right is an argument to those instructions.
+
+All Docker files start with a FROM instruction.
+
+1. FROM Ubuntu: Defines what the base OS should be for this container. Every docker image must be based off of another image, either an OS or other image created before based on OS.
+
+2. RUN apt -get update && apt -get -y install python
+   RUN pip install flask flask -mysql
+   Install all dependencies. This instructs Docker to run a particular command on those base images.
+   Here, apt get update command fetches updated packages and installs required dependencies on the image.
+
+3. COPY . /opt/source-code: Copies file from local system onto docker image. Source code is in current folder. This is copied to opt/source-code inside Docker image.
+
+4. ENTRYPOINT FLASK_APP=/souce-code/app.py flask run: Specify a command that will be run when image is run as a container.
+
+Docker builds images in a layered architecture. All layers are cached which helps in using previous layers if any of the layers(steps) in between is crashed.
+
+5. docker build . : TO build image
+
+PUSHING TO DOCKER HUB
+1. docker build . -t febin/test-app: Tag image with user name
+2. docker login: Give user name and pass
+3. dokcer push febin/test-app
 
