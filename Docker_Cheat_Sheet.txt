@@ -1,6 +1,12 @@
-1) docker run: Run a container(a running copy of it) from an image(Ready made package with app and it's environment). E.g.: Image - Class, Container -      Object. It will check in the host(your computer) first, if it's not present there it will pull down the image from docker host.
-This command runs in a foreground/ attached mode. Output can only be viewed on the screen.
-If the image is not official, we should type docker run [user id/repo name]
+*******************************************************************************************************************************************************************************
+DOCKER_BASIC_COMMANDS
+
+1) docker run: Run a container(a running copy of it) from an image(Ready made package with app and it's environment). E.g.: Image - Class, Container - Object. 
+   It will check in the host(your computer) first, if it's not present there it will pull down the image from docker host.
+   This command runs in a foreground/ attached mode. Output can only be viewed on the screen.
+   If the image is not official, we should type,
+
+   docker run [user id/repo name]
 
 2) docker ps: Lists all running containers and some basic info about them
 
@@ -16,12 +22,10 @@ If the image is not official, we should type docker run [user id/repo name]
 
 8) docker pull [repo]: just pull the image without running it
 
-Container only exists till the task is finished.
-
 9) docker exec [container id] [command]: To execute a command on the docker container
 
 10) docker run -d [repo]: Runs the docker container in detached mode / background mode and you will be back to prompt immediately after this command.
-Container continues to run in backend.
+    Container continues to run in backend.
 
 11) docker attach [few starting characters of id]: To attach back to the running container
 
@@ -37,7 +41,8 @@ Container continues to run in backend.
 
 17) docker run -it [image]: The interactive mode along with prompt is ran
 
-18) docker run -p 80:5000 [image]:To port map 80 of local host to 5000 on docker container. Website can be accessed using https://[internal ip]:[port]. Multiple instances of container can be run in multiple hosts
+18) docker run -p 80:5000 [image]:To port map 80 of local host to 5000 on docker container.
+    Website can be accessed using https://[internal ip]:[port]. Multiple instances of container can be run in multiple hosts
 
 19) docker run -v [external directory]: [directory inside a container]: To port volume to a external directory, so that data is stored even after the removal of container.
 
@@ -47,43 +52,139 @@ Container continues to run in backend.
 
 22) docker run [image] sh -c "cat /etc/*release*": Gives the details on the version of container.
 
-23) cat [command]: Print contents of file to the terminal.
+23) docker run -e APP_COLOR=blue [image]: To run container with an environment variable set
 
-24) pwd: Print current working directory
+24) docker run --link redis:redis voting-app: Link option is used to link 2 containers together.
 
-25) vim [file name]: To open in editor
 
-26) i: For insert mode in editor
+Note: A Container only exists till the task is finished.
 
-27) ESC + :wq!: For saving and closing editor 
+**************************************************************************************************************************************************************************************
 
-28) ESC + :q!: For closing editor without saving
+POWERSHELL_ESSENTIALS
 
-29) docker run -e APP_COLOR=blue [image]: To run container with an environment variable set
+1) cat [command]: Print contents of file to the terminal.
 
-CREATING DOCKER IMAGE
-Docker file: A text file written in specific format that the Docker can understand. It's in Instruction and Argument format.
+2) pwd: Print current working directory
+
+3) vim [file name]: To open in editor
+
+4) i: For insert mode in editor
+
+5) ESC + :wq!: For saving and closing editor 
+
+6) ESC + :q!: For closing editor without saving
+
+7) cat > [file name]: To create a text file
+
+***************************************************************************************************************************************************************************************
+
+CREATING_DOCKER_IMAGE
+
+Docker file:- A text file written in specific format that the Docker can understand. It's in Instruction and Argument format.
 Everything on the left in CAPS is an instruction. Everything on right is an argument to those instructions.
 
-All Docker files start with a FROM instruction.
+Note: All Docker files start with a FROM instruction.
 
-1. FROM Ubuntu: Defines what the base OS should be for this container. Every docker image must be based off of another image, either an OS or other image created before based on OS.
+STEPS 1-4 inside docker file:
 
-2. RUN apt -get update && apt -get -y install python
+1) FROM Ubuntu: Defines what the base OS should be for this container. Every docker image must be based off of another image, either an OS or other image created before based on OS.
+
+2) RUN apt -get update && apt -get -y install python
    RUN pip install flask flask -mysql
    Install all dependencies. This instructs Docker to run a particular command on those base images.
    Here, apt get update command fetches updated packages and installs required dependencies on the image.
 
-3. COPY . /opt/source-code: Copies file from local system onto docker image. Source code is in current folder. This is copied to opt/source-code inside Docker image.
+3) COPY . /opt/source-code: Copies file from local system onto docker image. Source code is in current folder. This is copied to opt/source-code inside Docker image.
 
-4. ENTRYPOINT FLASK_APP=/souce-code/app.py flask run: Specify a command that will be run when image is run as a container.
+4) ENTRYPOINT FLASK_APP=/souce-code/app.py flask run: Specify a command that will be run when image is run as a container.
 
-Docker builds images in a layered architecture. All layers are cached which helps in using previous layers if any of the layers(steps) in between is crashed.
+5) docker build . : TO build image
 
-5. docker build . : TO build image
 
-PUSHING TO DOCKER HUB
-1. docker build . -t febin/test-app: Tag image with user name
-2. docker login: Give user name and pass
-3. dokcer push febin/test-app
+Note: Docker builds images in a layered architecture. All layers are cached which helps in using previous layers if any of the layers(steps) in between is crashed.
 
+**************************************************************************************************************************************************************************************************
+
+PUSHING_TO_DOCKER_HUB
+
+1) docker build . -t febin/test-app: Tag image with user name
+2) docker login: Give user name and pass
+3) docker push febin/test-app
+
+***************************************************************************************************************************************************************************************************
+
+COMPOSING_DOCKER_FILE
+
+Example of docker-compose.yml file:-
+
+version: "3.9"
+
+services:
+  redis:
+    image: redis
+
+  db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  vote:
+    image: voting-app
+    ports:
+      - "5000:80"
+    depends_on:
+      - redis
+
+  worker:
+    image: worker-app
+    depends_on:
+      - db
+      - redis
+
+  result:
+    image: result-app
+    ports:
+      - "5001:80"
+    depends_on:
+      - db
+
+
+Note: After the creation of yml file,
+
+      docker-compose up: To bring up the application stack
+
+********************************************************************************************************************************************************************************************************
+
+DOCKER_REGISTRY
+
+It is the Central repository of all docker images.
+
+Note: To access a private registry, we should always login to it using,
+
+docker login [private-reg-name.io].
+
+Then,
+
+docker run [private-reg-name.io/library-name/image-name]
+
+Creating own registry server:
+
+docker run --name=my-registry -d -p 5000:5000 --restart=always registry:2
+
+For pushing images to own registry service, First pull it using, 
+
+docker pull nginx:latest
+
+docker image tag nginx:latest localhost:5000/nginx:latest. This command Tag image with private registry url in it
+
+Then push the image finally using,
+
+docker push localhost:5000/nginx:latest
+
+To later pull this from our own server, 
+
+docker pull localhost:5000/nginx:latest
+
+************************************************************************************************************************************************************************************************************
