@@ -56,6 +56,22 @@ DOCKER_BASIC_COMMANDS
 
 24) docker run --link redis:redis voting-app: Link option is used to link 2 containers together.
 
+25) docker exec [containerid] ps -eaf: Lists all processes running on that container.
+
+26) docker info: Gives info on docker installed on the system.
+
+27) docker history [image id]: Shows list of steps followed to create that image.
+
+28) docker system df: To see actual space consumption on the disk.
+
+29) docker system df -v: Gives detailed space consumption of all images on the disk.
+
+30) docker run Ubuntu --network=host: To specify any network other than default network which is bridge.
+
+31) docker network ls: To list all networks.
+
+32) docker network create --driver=[bridge/none/host] --subnet=[ip] --gateway=[ip] [network_name]: To create a new network
+
 
 Note: A Container only exists till the task is finished.
 
@@ -76,6 +92,7 @@ POWERSHELL_ESSENTIALS
 6) ESC + :q!: For closing editor without saving
 
 7) cat > [file name]: To create a text file
+
 
 ***************************************************************************************************************************************************************************************
 
@@ -188,3 +205,42 @@ To later pull this from our own server,
 docker pull localhost:5000/nginx:latest
 
 ************************************************************************************************************************************************************************************************************
+
+DOCKER_ENGINE
+
+Docker Engine: A host with Docker installed on it. If we are installing it on a Linux host, there are 3 main components:-
+
+1) Docker Daemon: Background service that manages docker objects such as volumes, images, containers and networks.
+2) Docker REST API: API interface that programs can use to talk to daemon and provide instructions.
+3) Docker CLI: Command line interface used to perform actions such as running containers etc.
+
+Docker CLI used REST API to talk with Daemon.
+
+Volume Mounting: Mounts a volume from the volumes directory(/var/lib/docker/volumes)
+Bind Mounting: Mounts a directory from any location on docker host.
+
+**************************************************************************************************************************************************************************************************************
+
+DOCKER_NETWORKING
+
+3 networks are created automatically when docker is installed:-
+
+1) Bridge: Default network a container gets attached to. Private internal network created by Docker on the host. Network id - 172.17.0.1
+2) None: Containers not attached to any network.
+3) Host: Multiple web containers can't be run on the same host on the same port.
+
+***************************************************************************************************************************************************************************************************************
+
+CONTAINER_ORCHESTRATION
+
+It is a solution that consists of a set of tools and scripts that can help host containers in  a production environment. It consists of multiple docker hosts that can host containers. This easily allows you to deploy hundreds or thousands of instances of your application with a single command. Eg: Docker Swarm, Kubernetes, MESOS.
+
+Docker Swarm: Multiple docker hosts with docker installed on them can be clustered together. One host should be designated as Manager or Master and others as Slaves/Workers. Then run,
+
+docker swarm init --[] []: To initialize Swarm manager 
+
+docker swarm join --token [token]: To join workers to manager
+
+docker service create --replicas=3 [image]: 3 instances of web servers are distributed across different worker nodes. This command should be run on the manager node.
+
+****************************************************************************************************************************************************************************************************************
